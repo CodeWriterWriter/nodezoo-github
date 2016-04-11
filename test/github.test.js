@@ -10,7 +10,7 @@ var describe = lab.describe
 var it = lab.it
 var expect = Code.expect
 
-var Github = require('../lib/github')
+var Github = require('..')
 
 /*
  * Notice: For travis/CI, tests have been configured with a token provided by
@@ -23,14 +23,10 @@ var Github = require('../lib/github')
 describe('nodezoo-github', function () {
   it('Fired the get pattern', function (done) {
     var seneca = Seneca({ log: 'silent' })
-    seneca.use('entity')
-    seneca.use(Github, { token: 'f40c9022ceb84264231cd5fb73314a55621427e3' })
-
+    seneca.use(Github, { token: process.env.GITHUB_TOKEN })
 
     seneca.ready(function () {
-      console.log("before")
       seneca.act({ role: 'github', cmd: 'get', name: 'nodejs/node.git', giturl: 'git@github.com:nodejs/node.git' }, function (err, res) {
-        console.log(err)
         expect(err).to.not.exist()
         expect(res.user).to.equal('nodejs')
         expect(res.repo).to.equal('node')
@@ -43,7 +39,7 @@ describe('nodezoo-github', function () {
   it('Fired the query pattern', function (done) {
     var seneca = Seneca({ log: 'silent' })
     seneca.use(Github, { token: process.env.GITHUB_TOKEN })
-    seneca.use('entity')
+
     seneca.ready(function () {
       seneca.act({ role: 'github', cmd: 'query', name: 'nodejs/node.git', user: 'nodejs', repo: 'node' }, function (err, res) {
         expect(err).to.not.exist()
@@ -57,7 +53,6 @@ describe('nodezoo-github', function () {
 
   it('Fired the parse pattern', function (done) {
     var seneca = Seneca({ log: 'silent' })
-    seneca.use('entity')
     seneca.use(Github, { token: process.env.GITHUB_TOKEN })
 
     seneca.ready(function () {

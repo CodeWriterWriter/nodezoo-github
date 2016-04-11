@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node srv/start.js",
     "isolated": "GITHUB_ISOLATED=true node srv/start.js",
-    "lint": "lab test -dL",
-    "test": "lab"
+    "lint": "lab test -dL"
   },
   "main": "lib/github.js",
   "keywords": [
